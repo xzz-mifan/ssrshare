@@ -15,13 +15,14 @@ use think\Log;
  */
 class Sixhours extends Controller
 {
-    protected $site ;
+    protected $site;
 
     protected function _initialize()
     {
         set_time_limit(0);
-        $this->site= config('site');
+        $this->site = config('site');
     }
+
     public function index()
     {
 
@@ -118,7 +119,7 @@ class Sixhours extends Controller
             $date = ['status' => -1];
             $timeout = 2;
             try {
-                $connection  = stream_socket_client("tcp://{$v['address']}:{$v['port']}",$erron,$errors,$timeout);
+                $connection = stream_socket_client("tcp://{$v['address']}:{$v['port']}", $erron, $errors, $timeout);
                 if (!$connection) {
                     throw new Exception($errors($erron));
                 }
@@ -147,5 +148,29 @@ class Sixhours extends Controller
                 continue;
             }
         }
+    }
+
+    public function test()
+    {
+        $rels = $this->non_blocking_connect('173.82.245.189','20095',2,$errno,$errstr);
+        halt($errno);
+    }
+
+    public function non_blocking_connect($host, $port,$timeout, &$errno, &$errstr)
+    {
+        define('EINPROGRESS', 115);
+        $ip = gethostbyname($host);
+        $s = socket_create(AF_INET, SOCK_STREAM, 0);
+        if (socket_set_nonblock($s)) {
+            $r = @socket_connect($s, $ip, $port);
+            if ($r || socket_last_error() == EINPROGRESS) {
+                $errno = EINPROGRESS;
+                return $s;
+            }
+        }
+        $errno = socket_last_error($s);
+        $errstr = socket_strerror($errno);
+        socket_close($s);
+        return false;
     }
 }
