@@ -19,16 +19,18 @@ class Sixhours extends Controller
 
     protected function _initialize()
     {
-        set_time_limit(0);
         $this->site= config('site');
     }
     public function index()
     {
+        set_time_limit(0);
 
-        $this->success('请求成功');
+        $this->getSSRShare();
+
+        $this->detectAllSSR();
     }
 
-    public function getSSRShare()
+    protected function getSSRShare()
     {
         $shareList = Share::all(['status' => 1]);
         foreach ($shareList as $k => $v) {
@@ -109,7 +111,7 @@ class Sixhours extends Controller
         }
     }
 
-    public function detectAllSSR()
+    protected function detectAllSSR()
     {
         $all_ssr = Config::all();
         foreach ($all_ssr as $k => $v) {
