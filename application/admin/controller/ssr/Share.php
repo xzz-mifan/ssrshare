@@ -3,6 +3,7 @@
 namespace app\admin\controller\ssr;
 
 use app\common\controller\Backend;
+use think\Db;
 
 /**
  * 订阅管理
