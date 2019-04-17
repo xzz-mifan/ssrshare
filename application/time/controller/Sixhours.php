@@ -116,7 +116,7 @@ class Sixhours extends Controller
         foreach ($all_ssr as $k => $v) {
             $statr_time = msectime();
             $date = ['status' => -1];
-            $timeout = 15;
+            $timeout = 2;
             try {
                 $connection  = stream_socket_client("tcp://{$v['address']}:{$v['port']}",$erron,$errors,$timeout);
                 if (!$connection) {
