@@ -3,6 +3,7 @@
 namespace app\time\controller;
 
 use app\admin\model\ssr\Config;
+use app\admin\model\ssr\Detect;
 use app\admin\model\ssr\Share;
 use think\Controller;
 use app\common\components\reptiles\Reptile;
@@ -14,7 +15,13 @@ use think\Log;
  */
 class Sixhours extends Controller
 {
+    protected $site ;
 
+    protected function _initialize()
+    {
+        set_time_limit(0);
+        $this->site= config('site');
+    }
     public function index()
     {
 
@@ -104,7 +111,6 @@ class Sixhours extends Controller
 
     public function detectAllSSR()
     {
-        set_time_limit(0);
         $all_ssr = Config::all();
         foreach ($all_ssr as $k => $v) {
             $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
@@ -117,39 +123,23 @@ class Sixhours extends Controller
                 }
 
             } catch (Exception $ex) {
-                echo $ex->getMessage()."<br/>";
+                $detectInfo = Detect::get(['ssr_id'=>$v['id']]);
+                if ($detectInfo)
+                {
+                    Detect::update(['count'=>($detectInfo['count']+1),'updatetime'=>time()],['ssr_id'=>$v['id']]);
+                }else{
+                    Detect::create(['ssr_id'=>$v['id'],'count'=>1,'msg'=>$ex->getMessage(),'updatetime'=>time(),'createtime'=>time()]);
+                }
+                if ($this->site['time_delete_error_count']<=$detectInfo['count'])
+                {
+                    Config::get($v['id'])->delete();
+                    $detectInfo->delete();
+                }
             }
             $end_time = msectime();
             $date['timeout'] = $end_time - $statr_time;
             Config::update($date, ['id' => $v['id']]);
             socket_close($socket);
         }
-
-
-    }
-
-    public function test()
-    {
-        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-        $connection = socket_connect($socket, "localhost", 1337);
-        while ($buffer = socket_read($socket, 1024, PHP_NORMAL_READ)) {
-            if ($buffer == "NO DATA") {
-                echo(" < p>NO DATA </p > ");
-                break;
-            } else {
-                // Do something with the data in the buffer
-                echo(" < p>Buffer Data: " . $buffer . " </p > ");
-            }
-        }
-        echo(" < p>Writing to Socket </p > ");
-// Write some test data to our socket
-        if (!socket_write($socket, "SOME DATA\r\n")) {
-            echo("< p>Write failed </p > ");
-        }
-// Read any response from the socket
-        while ($buffer = socket_read($socket, 1024, PHP_NORMAL_READ)) {
-            echo(" < p>Data sent was: SOME DATA Response was:" . $buffer . " </p > ");
-        }
-        echo(" < p>Done Reading from Socket </p > ");
     }
 }

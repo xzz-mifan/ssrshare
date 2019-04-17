@@ -1,0 +1,13 @@
+.env
+.idea/
+*.log
+.user.ini
+.uini
+runtime/
+.gitkeep
+public/uploads/*
+application/extra/site.php
+public/*.txt
+public/*.log
+public/.well-known
+public/tmp/

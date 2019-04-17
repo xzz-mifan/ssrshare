@@ -27,6 +27,7 @@ return array (
     'dictionary' => 'Dictionary',
     'user' => 'User',
     'example' => 'Example',
+    'ssrconfig' => 'SSR配置',
   ),
   'mail_type' => '1',
   'mail_smtp_host' => 'smtp.qq.com',
@@ -35,4 +36,5 @@ return array (
   'mail_smtp_pass' => 'password',
   'mail_verify_type' => '2',
   'mail_from' => '10000@qq.com',
+  'time_delete_error_count' => '24',
 );
