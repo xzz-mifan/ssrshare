@@ -19,11 +19,12 @@ class Sixhours extends Controller
 
     protected function _initialize()
     {
+        set_time_limit(0);
         $this->site= config('site');
     }
     public function index()
     {
-        set_time_limit(0);
+
         $this->getSSRShare();
 
         $this->detectAllSSR();
@@ -113,64 +114,38 @@ class Sixhours extends Controller
     {
         $all_ssr = Config::all();
         foreach ($all_ssr as $k => $v) {
-            $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
             $statr_time = msectime();
-
             $date = ['status' => -1];
-            $attempts = 0;
-            $timeout = 20;
-            $result = false;
-            while (!($result = @socket_connect($socket, $v['address'], $v['port'])) && $attempts++ < $timeout) {
-                $error = socket_last_error();
-                if ($error != SOCKET_EINPROGRESS && $error != SOCKET_EALREADY) {
-
-                    $error = "Error Connecting Socket: " . socket_strerror($error);
-                    $detectInfo = Detect::get(['ssr_id' => $v['id']]);
-                    if ($detectInfo) {
-                        Detect::update(['count' => ($detectInfo['count'] + 1), 'updatetime' => time()], ['ssr_id' => $v['id']]);
-                    } else {
-                        Detect::create(['ssr_id' => $v['id'], 'count' => 1, 'msg' => $error, 'updatetime' => time(), 'createtime' => time()]);
-                    }
-                    if ($this->site['time_delete_error_count'] <= $detectInfo['count']) {
-                        Config::get($v['id'])->delete();
-                        $detectInfo->delete();
-                    }
-                    socket_close($socket);
-
-                    $end_time = msectime();
-                    $date['timeout'] = $end_time - $statr_time;
-                    Config::update($date, ['id' => $v['id']]);
-
-                    continue 2;
+            $timeout = 15;
+            try {
+                $connection  = stream_socket_client("tcp://{$v['address']}:{$v['port']}",$erron,$errors,$timeout);
+                if (!$connection) {
+                    throw new Exception($errors($erron));
                 }
-                usleep(1000);
-            }
 
-            if (!$result) {
-                $error = "Error Connecting Socket: Connect Timed Out After $timeout seconds. " . socket_strerror(socket_last_error());
+                $end_time = msectime();
+                $date['status'] = 1;
+                $date['timeout'] = $end_time - $statr_time;
+                Config::update($date, ['id' => $v['id']]);
+                continue;
+
+            } catch (Exception $ex) {
                 $detectInfo = Detect::get(['ssr_id' => $v['id']]);
                 if ($detectInfo) {
                     Detect::update(['count' => ($detectInfo['count'] + 1), 'updatetime' => time()], ['ssr_id' => $v['id']]);
                 } else {
-                    Detect::create(['ssr_id' => $v['id'], 'count' => 1, 'msg' => $error, 'updatetime' => time(), 'createtime' => time()]);
+                    Detect::create(['ssr_id' => $v['id'], 'count' => 1, 'msg' => $ex->getMessage(), 'updatetime' => time(), 'createtime' => time()]);
                 }
                 if ($this->site['time_delete_error_count'] <= $detectInfo['count']) {
                     Config::get($v['id'])->delete();
                     $detectInfo->delete();
                 }
-                socket_close($socket);
 
                 $end_time = msectime();
                 $date['timeout'] = $end_time - $statr_time;
                 Config::update($date, ['id' => $v['id']]);
-                continue ;
+                continue;
             }
-
-            $end_time = msectime();
-            $date['status'] = 1;
-            $date['timeout'] = $end_time - $statr_time;
-            Config::update($date, ['id' => $v['id']]);
-            socket_close($socket);
         }
     }
 }
