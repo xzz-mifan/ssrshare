@@ -30,7 +30,7 @@ class Sixhours extends Controller
         $this->detectAllSSR();
     }
 
-    protected function getSSRShare()
+    public function getSSRShare()
     {
         $shareList = Share::all(['status' => 1]);
         foreach ($shareList as $k => $v) {
@@ -111,7 +111,7 @@ class Sixhours extends Controller
         }
     }
 
-    protected function detectAllSSR()
+    public function detectAllSSR()
     {
         $all_ssr = Config::all();
         foreach ($all_ssr as $k => $v) {
