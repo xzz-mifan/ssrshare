@@ -7,7 +7,7 @@
 
     <body>
 
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <nav class="navbar {if !$user}navbar-inverse{else}navbar-default{/if}  navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#header-navbar">
@@ -19,10 +19,11 @@
                     <a class="navbar-brand" href="{:url('/')}" style="padding:6px 15px;"><img src="__CDN__/assets/img/logo.png" style="height:40px;" alt=""></a>
                 </div>
                 <div class="collapse navbar-collapse" id="header-navbar">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#" target="_blank">{:__('Home')}</a></li>
-                        <li><a href="#" target="_blank">{:__('Download')}</a></li>
-
+                    <ul class="nav navbar-nav navbar-right" id="menu">
+                        <li data-menuanchor="page1"><a href="#page1">{:__('Home')}</a></li>
+                        <li data-menuanchor="page2"><a href="#page2">{:__('Download')}</a></li>
+                        <li data-menuanchor="page3"><a href="#page3">{:__('Home')}</a></li>
+                        <li data-menuanchor="page4"><a href="#page4">{:__('Home')}</a></li>
                         <li class="dropdown">
                             {if $user}
                             <a href="{:url('user/index')}" class="dropdown-toggle" data-toggle="dropdown" style="padding-top: 10px;height: 50px;">
@@ -48,15 +49,15 @@
                 </div>
             </div>
         </nav>
-
-        <main class="content">
+        <!-- class content-->
+        <main class="{if !$user}content{/if}">
             {__CONTENT__}
         </main>
-
+        {if !$user}
         <footer class="footer" style="clear:both">
             <p class="copyright">Copyright&nbsp;©&nbsp;2017-2019 Powered by All Rights Reserved {$site.name} {:__('Copyrights')} <a href="http://www.miibeian.gov.cn" target="_blank">{$site.beian}</a></p>
         </footer>
-
+        {/if}
         {include file="common/script" /}
 
     </body>

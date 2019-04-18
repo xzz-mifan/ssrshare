@@ -49,7 +49,8 @@ require.config({
         'template': '../libs/art-template/dist/template-native',
         'selectpage': '../libs/fastadmin-selectpage/selectpage',
         'citypicker': '../libs/fastadmin-citypicker/dist/js/city-picker.min',
-        'citypicker-data': '../libs/fastadmin-citypicker/dist/js/city-picker.data'
+        'citypicker-data': '../libs/fastadmin-citypicker/dist/js/city-picker.data',
+        'jquery-fullpage': '../libs/jquery-fullpage/js/jquery.fullPage.min',
     },
     // shim依赖配置
     shim: {

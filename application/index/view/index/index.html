@@ -1,3 +1,42 @@
-<div id="content-container" class="container">
+<link href="__CDN__/assets/libs/jquery-fullpage/css/jquery.fullPage.css?v={$Think.config.site.version}" rel="stylesheet">
+<link href="__CDN__/assets/css/index.css?v={$Think.config.site.version}" rel="stylesheet">
+<style>
+    .section { text-align: center; font: 50px "Microsoft Yahei"; color: #fff;}
+    .section1 .title{ position: relative;z-index: 2}
+    .section1 .left{ position: relative; left: -120%;z-index: 2}
+    .section1 .right{ position: relative; right: -120%;z-index: 2}
+    .section1 .zz{position:absolute;width: 100%;height: 100%;background-color: #00000069;top: 0;z-index: 1}
+</style>
 
+<div id="dowebok">
+    <div class="section section1">
+        <div class="zz"></div>
+        <h1 class="title">Life is too short in the world</h1>
+        <h3 class="left">人生苦短</h3>
+        <h3 class="right">世界很大</h3>
+    </div>
+    <div class="section">
+        <div class="sub-title">
+            <h3>第二屏</h3>
+        </div>
+        <div class="sub-body">
+            <p>请查看左上角，点击可以控制</p>
+        </div>
+    </div>
+    <div class="section">
+        <div class="sub-title">
+            <h3>第三屏</h3>
+        </div>
+        <div class="sub-body">
+            <p>绑定的菜单没有默认的样式，你需要自行编写</p>
+        </div>
+    </div>
+    <div class="section">
+        <div class="sub-title">
+            <h3>第四屏</h3>
+        </div>
+        <div class="sub-body">
+            <p>fullPage.js — 这是最后一屏</p>
+        </div>
+    </div>
 </div>

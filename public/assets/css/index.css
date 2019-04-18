@@ -423,3 +423,14 @@ footer ul li a.active {
 body {
     webkit-tap-highlight-color: #222222;
 }
+.sub-title{
+    background-color: #1717178a;
+    height: 20%;
+    /*display: list-item;*/
+    /*vertical-align: sub;*/
+}
+.sub-body{
+    height: 80%;
+    /*display: list-item;*/
+    /*vertical-align: middle;*/
+}
