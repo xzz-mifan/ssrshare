@@ -1,19 +1,24 @@
 <link href="__CDN__/assets/libs/jquery-fullpage/css/jquery.fullPage.css?v={$Think.config.site.version}" rel="stylesheet">
 <link href="__CDN__/assets/css/index.css?v={$Think.config.site.version}" rel="stylesheet">
+<script src="__CDN__/assets//libs/jquery/dist/jquery.min.js"></script>
+<script src="__CDN__/assets/libs/jquery-fullpage/js/jquery.fullPage.min.js"></script>
+<script src="__CDN__/assets/js/frontend/index_init.js"></script>
 <style>
-    .section { text-align: center; font: 50px "Microsoft Yahei"; color: #fff;}
+    .section { text-align: center; font: 50px "Microsoft Yahei"; color: #fff; z-index: -1}
     .section1 .title{ position: relative;z-index: 2}
     .section1 .left{ position: relative; left: -120%;z-index: 2}
     .section1 .right{ position: relative; right: -120%;z-index: 2}
-    .section1 .zz{position:absolute;width: 100%;height: 100%;background-color: #00000069;top: 0;z-index: 1}
+    .section1 .zz{position:absolute;width: 100%;height: 100%;background-color: #00000069;top: 0;z-index: -1}
 </style>
-
 <div id="dowebok">
     <div class="section section1">
         <div class="zz"></div>
-        <h1 class="title">Life is too short in the world</h1>
-        <h3 class="left">人生苦短</h3>
-        <h3 class="right">世界很大</h3>
+        <h1 class="title"><lable>Life is too short in the world</lable></h1>
+        <h1>
+            <lable class="left">人生苦短</lable>
+            <lable class="right">世界很大</lable>
+        </h1>
+        <button class="btn btn-primary">GET SSR</button>
     </div>
     <div class="section">
         <div class="sub-title">
