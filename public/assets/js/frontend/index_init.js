@@ -5,23 +5,18 @@ $(function(){
         dataType:'json',
         async:false,
         success:function(data) {
-            $('#dowebok div:eq(0)').css('background',' url('+data.data+') 50%');
+            $('body').css('background',' url('+data.data+') 50%');
+            // #dowebok div:eq(0)
             home_animate(1);
             $('#dowebok').fullpage({
-                sectionsColor: ['#1bbc9b', '#4BBFC3', '#7BAABE', '#f90'],
+                // sectionsColor: ['#1bbc9b', '#4BBFC3', '#7BAABE', '#f90'],
                 anchors: ['page1', 'page2', 'page3', 'page4'],
                 menu: '#menu',
                 verticalCentered:true,
                 navigation:true,
                 paddingTop:"40px",
                 afterLoad:function (anchorLink,index) {
-                    if (index==1)
-                    {
-                        home_animate(1);
-                    }else{
-                        $('.navbar-default').removeClass('navbar-default').addClass('navbar-inverse');
-                    }
-
+                    home_animate(index);
                 }
             });
         },
@@ -39,8 +34,9 @@ function home_animate(index)
             $('.section1').find('.right').delay(500).animate({
                 right: '0'
             }, 1000);
-
             break;
+        default:
+            $('.navbar-default').removeClass('navbar-default').addClass('navbar-inverse');
     }
 
 }

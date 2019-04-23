@@ -14,14 +14,15 @@ class Unofficial extends Api
     protected $noNeedLogin = ['bingImage'];
     public function bingImage()
     {
+        $idx = $this->request->param('idx');
+        $idx = !$idx?0:$idx;
         $image = Cache::get('bingimage');
         if (!$image)
         {
             $reptile = new Reptile();
-            $reptile->Set_Method('get');
             $reptile->Set_Https(true);
             $reptile->Set_Url(['https://www.bing.com/HPImageArchive.aspx']);
-            $reptile->Set_Param(['format'=>'js','idx'=>0,'n'=>1]);
+            $reptile->Set_Param(['format'=>'js','idx'=>'2','n'=>'1']);
             $data = $reptile->Reptile_send();
             $data = json_decode($data[0],true);
             $image = "https://www.bing.com/{$data['images'][0]['url']}";
