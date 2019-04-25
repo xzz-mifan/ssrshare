@@ -105,7 +105,7 @@ class Sixhours extends Controller
                 }
                 $shareInfo = Config::get(['address' => $val1[0], 'port' => $val1[1]]);
                 if ($shareInfo) {
-                    Config::update($date, ['id' => $shareInfo['id']]);
+                    Config::update($date, ['address' => $val1[0], 'port' => $val1[1]]);
                 } else {
                     $date['status'] = 0;
                     Config::create($date);
