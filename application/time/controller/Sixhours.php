@@ -60,15 +60,9 @@ class Sixhours extends Controller
                 }
                 $ssr_info = base64_decode($ssr_info[1]);
                 $ssr_info = explode('/?', $ssr_info);
+                $ssr_info = explode('/>', $ssr_info);
                 $val1 = explode(':', $ssr_info[0]);
-                try {
-                    $val2 = explode('&', str_replace('>', "", $ssr_info[1]));
-
-                } catch (Exception $ex) {
-                    echo $ssr."<br>";
-                    halt($ssr_info);
-                    exit();
-                }
+                $val2 = explode('&', $ssr_info[1]);
                 if (!checkIp($val1[0]) && !checkHost($val1[0])) {
                     continue;
                 }
