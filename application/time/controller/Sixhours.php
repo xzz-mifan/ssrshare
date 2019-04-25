@@ -70,6 +70,10 @@ class Sixhours extends Controller
                 if (!checkIp($val1[0]) && !checkHost($val1[0])) {
                     continue;
                 }
+                if (empty($val1[2]))
+                {
+                    continue;
+                }
                 $val1[5] = str_replace('_', '+', $val1[5]);
                 $date = [
                     'share_id' => $v['id'],
