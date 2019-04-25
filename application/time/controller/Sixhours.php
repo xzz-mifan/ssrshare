@@ -103,7 +103,7 @@ class Sixhours extends Controller
                             break;
                     }
                 }
-                $shareInfo = Config::get(['share_id' => $v['id'], 'address' => $val1[0], 'port' => $val1[1]]);
+                $shareInfo = Config::get(['address' => $val1[0], 'port' => $val1[1]]);
                 if ($shareInfo) {
                     Config::update($date, ['id' => $shareInfo['id']]);
                 } else {
