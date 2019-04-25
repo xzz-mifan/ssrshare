@@ -70,8 +70,7 @@ class Sixhours extends Controller
                 if (!checkIp($val1[0]) && !checkHost($val1[0])) {
                     continue;
                 }
-                if (empty($val1[2]))
-                {
+                if (empty($val1[2])) {
                     continue;
                 }
                 $val1[5] = str_replace('_', '+', $val1[5]);
@@ -107,9 +106,9 @@ class Sixhours extends Controller
                             break;
                     }
                 }
-                $shareInfo = Config::get(['address' => $val1[0], 'port' => $val1[1]]);
+                $shareInfo = Config::get(['share_id' => $v['id'], 'address' => $val1[0], 'port' => $val1[1]]);
                 if ($shareInfo) {
-                    Config::update($date, ['address' => $val1[0], 'port' => $val1[1]]);
+                    Config::update($date, ['id' => $shareInfo['id']]);
                 } else {
                     $date['status'] = 0;
                     Config::create($date);
