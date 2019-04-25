@@ -63,11 +63,11 @@ class Reptile {
 
 	public function Reptile_send(){
 		foreach ($this->url as $key => $url) {
-
 			//创建连接
-			$conn[$key]=curl_init($url);
+			$conn[$key]=curl_init();
+			curl_setopt($conn[$key], CURLOPT_URL, $url);
 			//检测提交方式
-       		if ($this->method=='post' || $this->method='POST') {
+       		if ($this->method=='post' || $this->method=='POST') {
        			curl_setopt($conn[$key],CURLOPT_POST,true);
        			if (count($this->param) == count($this->param,1)) {
        				curl_setopt($conn[$key],CURLOPT_POSTFIELDS,$this->param);
@@ -75,7 +75,7 @@ class Reptile {
        				curl_setopt($conn[$key],CURLOPT_POSTFIELDS,$this->param[$key]);
        			}
        		}
-			if ($this->method=='get' || $this->method='GET') {
+			if ($this->method=='get' || $this->method=='GET') {
        			$get_param='';
        			if (count($this->param) == count($this->param,1)) {
        				foreach ($this->param as $fidld => $va) {
@@ -92,13 +92,13 @@ class Reptile {
 				$conn[$key]=curl_init($url);
        		}
 			//设置以二进制形式返回数据
-       		curl_setopt($conn[$key],CURLOPT_RETURNTRANSFER,true);
+       		curl_setopt($conn[$key],CURLOPT_RETURNTRANSFER,1);
        		//等待请求时间
        		curl_setopt($conn[$key],CURLOPT_CONNECTTIMEOUT,$this->time);
        		//针对于302跳转
-       		curl_setopt($conn[$key],CURLOPT_CUSTOMREQUEST,$this->method);
+//       		curl_setopt($conn[$key],CURLOPT_CUSTOMREQUEST,$this->method);
        		//判断是否是https
-       		if ($this->https=true) {
+       		if ($this->https==true) {
        			curl_setopt($conn[$key],CURLOPT_SSL_VERIFYPEER,false);
           		curl_setopt($conn[$key],CURLOPT_SSL_VERIFYHOST,false);
        		}

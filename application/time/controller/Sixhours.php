@@ -41,6 +41,7 @@ class Sixhours extends Controller
             } else {
                 $reptile->Set_Https(false);
             }
+            $reptile->Set_Method('exit');
             $reptile->Set_Url([$v['url']]);
             $resl = $reptile->Reptile_send();
             if (empty($resl[0])) {
