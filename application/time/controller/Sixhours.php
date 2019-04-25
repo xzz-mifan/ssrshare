@@ -59,8 +59,11 @@ class Sixhours extends Controller
                     continue;
                 }
                 $ssr_info = base64_decode($ssr_info[1]);
-                $ssr_info = explode('/?', $ssr_info);
-                $ssr_info = explode('/>', $ssr_info);
+                $ssr_info_str = $ssr_info;
+                $ssr_info = explode('/?', $ssr_info_str);
+                if (count($ssr_info)) {
+                    $ssr_info = explode('/>', $ssr_info_str);
+                }
                 $val1 = explode(':', $ssr_info[0]);
                 $val2 = explode('&', $ssr_info[1]);
                 if (!checkIp($val1[0]) && !checkHost($val1[0])) {
