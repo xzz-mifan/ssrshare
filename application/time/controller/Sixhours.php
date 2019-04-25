@@ -61,7 +61,7 @@ class Sixhours extends Controller
                 $ssr_info = base64_decode($ssr_info[1]);
                 $ssr_info_str = $ssr_info;
                 $ssr_info = explode('/?', $ssr_info_str);
-                if (count($ssr_info)) {
+                if (count($ssr_info)==1) {
                     $ssr_info = explode('/>', $ssr_info_str);
                 }
                 $val1 = explode(':', $ssr_info[0]);
