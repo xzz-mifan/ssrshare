@@ -27,6 +27,8 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'id', title: __('Id')},
                         {field: 'name', title: __('Name')},
                         {field: 'url', title: __('Url'), formatter: Table.api.formatter.url},
+                        {field: 'analyze_tyep', title: __('Analyze_tyep'), searchList: {"1":__('Analyze_tyep 1'),"2":__('Analyze_tyep 2')}, formatter: Table.api.formatter.normal},
+                        {field: 'key', title: __('Key')},
                         {field: 'marker_content', title: __('Marker_content')},
                         {field: 'url_status', title: __('Url_status'),searchList: {"0":__('Url_status 0'),"1":__('Url_status 1')}, formatter: Table.api.formatter.status},
                         {field: 'status', title: __('Status'), searchList: {"0":__('Status 0'),"1":__('Status 1')}, formatter: Table.api.formatter.status},
