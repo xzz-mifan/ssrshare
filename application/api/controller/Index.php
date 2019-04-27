@@ -24,7 +24,7 @@ class Index extends Api
     public function ssr()
     {
         $configModel = new ConfigModel();
-        $ssrList = $configModel->where(['status'=>1])->order('timeout asc')->limit(20)->select();
+        $ssrList = $configModel->where(['status'=>1])->order('timeout asc')->limit(50)->select();
         $ssr_str='';
         foreach ($ssrList as $k => $v)
         {
