@@ -147,7 +147,7 @@ class Config extends Model
                 return self::analyzeCommon($content);
                 break;
             case 2:
-                self::analyzeASE($content,$key);
+                return self::analyzeASE($content,$key);
                 break;
         }
     }
@@ -161,12 +161,17 @@ class Config extends Model
 
     private static function analyzeASE($content,$key)
     {
+        $content = json_decode($content,true);
+        $content = $content['ssrs'];
         $ssrs = openssl_decrypt($content, 'AES-128-ECB', $key);
         $ssrs = json_decode($ssrs,true);
         $content=[];
         foreach ($ssrs as $value) {
-            if (isset())
+            if (isset($value['ssrUrl']))
+            {
+                array_push($content,$value['ssrUrl']);
+            }
         }
-
+        return $content;
     }
 }
