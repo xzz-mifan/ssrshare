@@ -25,8 +25,8 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                     [
                         {checkbox: true},
                         {field: 'id', title: __('Id'),visible:false},
-                        {field: 'share.name', title: __('Share.name')},
-                        {field: 'address', title: __('Address')},
+                        {field: 'share.name', title: __('Share.name'),sortable: true},
+                        {field: 'address', title: __('Address'),sortable: true},
                         {field: 'port', title: __('Port')},
                         {field: 'password', title: __('Password')},
                         {field: 'method', title: __('Method')},
@@ -39,8 +39,8 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'ssrurl', title: __('Ssrurl'), formatter: Table.api.formatter.url,visible:false},
                         {field: 'status', title: __('Status'), searchList: {"0":__('Status 0'),"-1":__('Status -1'),"1":__('Status 1')}, formatter: Table.api.formatter.status},
                         {field: 'timeout', title: __('Timeout'),sortable: true},
-                        {field: 'updatetime', title: __('Updatetime'), operate:'RANGE', addclass:'datetimerange', formatter: Table.api.formatter.datetime,visible:false},
-                        {field: 'createtime', title: __('Createtime'), operate:'RANGE', addclass:'datetimerange', formatter: Table.api.formatter.datetime,visible:false},
+                        {field: 'updatetime', title: __('Updatetime'), operate:'RANGE', addclass:'datetimerange', formatter: Table.api.formatter.datetime,sortable: true},
+                        {field: 'createtime', title: __('Createtime'), operate:'RANGE', addclass:'datetimerange', formatter: Table.api.formatter.datetime,visible:false,sortable: true},
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
                     ]
                 ]
