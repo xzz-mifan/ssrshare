@@ -101,4 +101,9 @@ class User extends Model
         return $this->belongsTo('UserGroup', 'group_id', 'id', [], 'LEFT')->setEagerlyType(0);
     }
 
+    public function level()
+    {
+        return $this->belongsTo('app\admin\model\user\Level', 'level_id', 'id', [], 'LEFT')->setEagerlyType(0);
+    }
+
 }

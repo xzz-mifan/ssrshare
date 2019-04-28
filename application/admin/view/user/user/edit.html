@@ -51,12 +51,6 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="c-level" class="control-label col-xs-12 col-sm-2">{:__('Level')}:</label>
-        <div class="col-xs-12 col-sm-4">
-            <input id="c-level" data-rule="required" class="form-control" name="row[level]" type="number" value="{$row.level}">
-        </div>
-    </div>
-    <div class="form-group">
         <label for="c-gender" class="control-label col-xs-12 col-sm-2">{:__('Gender')}:</label>
         <div class="col-xs-12 col-sm-8">
             {:build_radios('row[gender]', ['1'=>__('Male'), '0'=>__('Female')], $row['gender'])}
@@ -132,6 +126,18 @@
         <label for="c-jointime" class="control-label col-xs-12 col-sm-2">{:__('Jointime')}:</label>
         <div class="col-xs-12 col-sm-4">
             <input id="c-jointime" data-rule="required" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[jointime]" type="text" value="{$row.jointime|datetime}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">等级组:</label>
+        <div class="col-xs-12 col-sm-8">
+
+            <select  id="c-analyze_tyep" data-rule="required" class="form-control selectpicker" name="row[analyze_tyep]">
+                {foreach name="level_list" item="vo"}
+                <option value="{$vo['id']}" {in name="$vo['id']" value="$row.level_id"}selected{/in}>{$vo['name']}</option>
+                {/foreach}
+            </select>
+
         </div>
     </div>
     <div class="form-group">
