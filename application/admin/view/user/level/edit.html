@@ -1,0 +1,46 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Pid')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-pid" data-rule="required" class="form-control" name="row[pid]" type="number" value="{$row.pid}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Name')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-name" data-rule="required" class="form-control" name="row[name]" type="text" value="{$row.name}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Amount')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-amount" data-rule="required" class="form-control" name="row[amount]" type="number" value="{$row.amount}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Ping_min')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-ping_min" data-rule="required" class="form-control" name="row[ping_min]" type="number" value="{$row.ping_min}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Ping_max')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-ping_max" data-rule="required" class="form-control" name="row[ping_max]" type="number" value="{$row.ping_max}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Now_num')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-now_num" data-rule="required" class="form-control" name="row[now_num]" type="number" value="{$row.now_num}">
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>
