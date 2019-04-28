@@ -34,7 +34,7 @@ class Index extends Api
                 $config_str = $v['address'].':'.$v['port'].':'.$v['protocol'].':'.$v['method'].':'.$v['obfs'].':'.base64_encode($v['password']).'/?obfsparam='.base64_encode($v['obfs_param']).'&protoparam='.base64_encode($v['protocol_param']).'&remarks='.base64_encode('低延迟').'&group='.base64_encode('专用SSR');
                 $ssr_str.='ssr://'.base64_encode($config_str)."\n\r";
             }
-            echo '<script>console.log(123)</script>';
+//            echo '<script>console.log(123)</script>';
             return base64_encode($ssr_str);
 //        }
 
