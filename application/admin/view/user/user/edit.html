@@ -132,7 +132,7 @@
         <label class="control-label col-xs-12 col-sm-2">等级组:</label>
         <div class="col-xs-12 col-sm-8">
 
-            <select  id="c-analyze_tyep" data-rule="required" class="form-control selectpicker" name="row[analyze_tyep]">
+            <select  id="c-level_id" data-rule="required" class="form-control selectpicker" name="row[level_id]">
                 {foreach name="level_list" item="vo"}
                 <option value="{$vo['id']}" {in name="$vo['id']" value="$row.level_id"}selected{/in}>{$vo['name']}</option>
                 {/foreach}
