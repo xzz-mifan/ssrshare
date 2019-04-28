@@ -23,9 +23,9 @@ class Index extends Api
     }
     public function ssr()
     {
-        $token = $this->request->header('token');
-        if ($token){
-            trace(md5($token),'zhanzheng');
+//        $token = $this->request->header('token');
+//        if ($token){
+//            trace(md5($token),'zhanzheng');
             $configModel = new ConfigModel();
             $ssrList = $configModel->where(['status'=>1])->order('timeout asc')->limit(50)->select();
             $ssr_str='';
@@ -35,7 +35,7 @@ class Index extends Api
                 $ssr_str.='ssr://'.base64_encode($config_str)."\n\r";
             }
             return base64_encode($ssr_str);
-        }
-        echo '<script src="'. $this->request->root().'/assets/js/verification.js"></script>';
+//        }
+//        echo '<script src="'. $this->request->root().'/assets/js/verification.js"></script>';
     }
 }
