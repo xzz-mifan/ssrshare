@@ -26,7 +26,7 @@ class Index extends Api
 
     public function ssr()
     {
-        $token = $this->request->header('token');
+//        $token = $this->request->header('token');
 //        if ($token){
 //            trace(md5($token),'zhanzheng');
         $configModel = new ConfigModel();
@@ -36,8 +36,7 @@ class Index extends Api
             $config_str = $v['address'] . ':' . $v['port'] . ':' . $v['protocol'] . ':' . $v['method'] . ':' . $v['obfs'] . ':' . base64_encode($v['password']) . '/?obfsparam=' . base64_encode($v['obfs_param']) . '&protoparam=' . base64_encode($v['protocol_param']) . '&remarks=' . base64_encode('低延迟') . '&group=' . base64_encode('专用SSR');
             $ssr_str .= 'ssr://' . base64_encode($config_str) . "\n\r";
         }
-        echo base64_encode($ssr_str);
-        echo "\r\n<script />";
+        return base64_encode($ssr_str);
 //        }
 
     }
