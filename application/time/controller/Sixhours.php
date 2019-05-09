@@ -31,7 +31,7 @@ class Sixhours extends Controller
         try {
             Config::getSSRShare();
         } catch (Exception $ex) {
-            echo $ex->getMessage();
+            $this->error($ex->getMessage());
         }
     }
 
@@ -40,7 +40,7 @@ class Sixhours extends Controller
         try {
             Config::detectAllSSR();
         } catch (Exception $ex) {
-            echo $ex->getMessage();
+            $this->error($ex->getMessage());
         }
     }
 
