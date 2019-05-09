@@ -4,6 +4,7 @@ namespace app\time\controller;
 
 use app\admin\model\ssr\Config;
 use think\Controller;
+use think\Exception;
 
 
 /**
@@ -27,12 +28,20 @@ class Sixhours extends Controller
 
     public function getSSRShare()
     {
-        Config::getSSRShare();
+        try {
+            Config::getSSRShare();
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
     }
 
     public function detectAllSSR()
     {
-        Config::detectAllSSR();
+        try {
+            Config::detectAllSSR();
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
     }
 
 
