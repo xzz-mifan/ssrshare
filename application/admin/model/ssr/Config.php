@@ -130,14 +130,14 @@ class Config extends Model
                 }
                 /* 去重 */
                 $where = [
-                    'address' => $v['address'],
-                    'port' => $v['port'],
-                    'password' => $v['password'],
-                    'method' => $v['method'],
-                    'protocol' => $v['protocol'],
-                    'protocol_param' => $v['protocol_param'],
-                    'obfs' => $v['obfs'],
-                    'obfs_param' => $v['obfs_param'],
+                    'address' => $date['address'],
+                    'port' => $date['port'],
+                    'password' => $date['password'],
+                    'method' => $date['method'],
+                    'protocol' => $date['protocol'],
+                    'protocol_param' => $date['protocol_param'],
+                    'obfs' => $date['obfs'],
+                    'obfs_param' => $date['obfs_param'],
                 ];
                 $ssrCount = self::where($where)->count();
                 try {
