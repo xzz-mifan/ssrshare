@@ -4,17 +4,17 @@ namespace app\admin\model\ssr;
 
 use think\Model;
 use app\common\components\reptiles\Reptile;
+use think\Exception;
+use app\common\components\net\IpLocation;
 
 class Config extends Model
 {
-
-    
 
     //数据库
     protected $connection = 'database';
     // 表名
     protected $name = 'ssr_config';
-    
+
     // 自动写入时间戳字段
     protected $autoWriteTimestamp = 'int';
 
@@ -27,9 +27,13 @@ class Config extends Model
     protected $append = [
         'status_text'
     ];
-    
 
-    
+    protected function _initialize()
+    {
+
+    }
+
+
     public function getStatusList()
     {
         return ['0' => __('Status 0'), '-1' => __('Status -1'), '1' => __('Status 1')];
@@ -44,16 +48,13 @@ class Config extends Model
     }
 
 
-
-
     public function share()
     {
         return $this->belongsTo('app\admin\model\ssr\Share', 'share_id', 'id', [], 'LEFT')->setEagerlyType(0);
     }
 
-    public static function detectAllSSR()
+    public static function getSSRShare()
     {
-        $site = config('site');
         $shareList = Share::all(['status' => 1]);
         foreach ($shareList as $k => $v) {
             $reptile = new Reptile();
@@ -68,7 +69,7 @@ class Config extends Model
             if (empty($resl[0])) {
                 continue;
             }
-            $resl = self::analyze($v['analyze_tyep'],$resl[0],$v['key']);
+            $resl = self::analyze($v['analyze_tyep'], $resl[0], $v['key']);
 
             foreach ($resl as $ssr) {
                 $init_ssr = trim($ssr);
@@ -127,27 +128,45 @@ class Config extends Model
                             break;
                     }
                 }
-                $shareInfo = self::get(['share_id' => $v['id'], 'address' => $val1[0], 'port' => $val1[1]]);
-                if ($shareInfo) {
-                    self::update($date, ['id' => $shareInfo['id']]);
-                } else {
-                    $date['status'] = 0;
-                    self::create($date);
+                /* 去重 */
+                $where = [
+                    'address' => $v['address'],
+                    'port' => $v['port'],
+                    'password' => $v['password'],
+                    'method' => $v['method'],
+                    'protocol' => $v['protocol'],
+                    'protocol_param' => $v['protocol_param'],
+                    'obfs' => $v['obfs'],
+                    'obfs_param' => $v['obfs_param'],
+                ];
+                $ssrCount = self::where($where)->count();
+                try {
+                    if ($ssrCount>1)
+                    {
+                        self::where($where)->delete();
+                    }
+                    $shareInfo = self::get(['share_id' => $v['id'], 'address' => $val1[0], 'port' => $val1[1]]);
+                    if ($shareInfo) {
+                        self::update($date, ['id' => $shareInfo['id']]);
+                    } else {
+                        $date['status'] = 0;
+                        self::create($date);
+                    }
+                } catch (Exception $ex) {
+                    throw new Exception($ex->getMessage());
                 }
-
             }
         }
     }
 
-    public static function analyze($analyze_tyep,$content,$key='')
+    public static function analyze($analyze_tyep, $content, $key = '')
     {
-        switch ($analyze_tyep)
-        {
+        switch ($analyze_tyep) {
             case 1:
                 return self::analyzeCommon($content);
                 break;
             case 2:
-                return self::analyzeASE($content,$key);
+                return self::analyzeASE($content, $key);
                 break;
         }
     }
@@ -159,19 +178,69 @@ class Config extends Model
         return $content;
     }
 
-    private static function analyzeASE($content,$key)
+    private static function analyzeASE($content, $key)
     {
-        $content = json_decode($content,true);
+        $content = json_decode($content, true);
         $content = $content['ssrs'];
         $ssrs = openssl_decrypt($content, 'AES-128-ECB', $key);
-        $ssrs = json_decode($ssrs,true);
-        $content=[];
+        $ssrs = json_decode($ssrs, true);
+        $content = [];
         foreach ($ssrs as $value) {
-            if (isset($value['ssrUrl']))
-            {
-                array_push($content,$value['ssrUrl']);
+            if (isset($value['ssrUrl'])) {
+                array_push($content, $value['ssrUrl']);
             }
         }
         return $content;
+    }
+
+    public static function detectAllSSR()
+    {
+        $site = config('site');
+        $all_ssr = Config::all();
+        foreach ($all_ssr as $k => $v) {
+            $statr_time = msectime();
+            $date = ['status' => -1];
+            $timeout = $site['detect_ssr_time_out'];
+            try {
+                $connection = stream_socket_client("tcp://{$v['address']}:{$v['port']}", $erron, $errors, $timeout);
+                if (!$connection) {
+                    throw new Exception($errors($erron));
+                }
+
+                $ip = filter_var($v['address'], FILTER_VALIDATE_IP) ? trim($v['address']) : trim(gethostbyname($v['address']));
+
+                if (file_exists(ROOT_PATH . "application/common/components/net/qqwry.dat")) {
+                    $ipLocation = new IpLocation('qqwry.dat');
+                    $areaResult = $ipLocation->getlocation($ip);
+                    $date['country'] = mb_convert_encoding($areaResult['country'], 'utf8', 'gbk');
+                } else {
+                    $date['country'] = '未知';
+                }
+                $date['ip'] = $ip;
+                $date['country'] = empty($date['country']) ? '未知' : $date['country'];
+                $end_time = msectime();
+                $date['status'] = 1;
+                $date['timeout'] = $end_time - $statr_time;
+                Config::update($date, ['id' => $v['id']]);
+                continue;
+
+            } catch (Exception $ex) {
+                $detectInfo = Detect::get(['ssr_id' => $v['id']]);
+                if ($detectInfo) {
+                    Detect::update(['count' => ($detectInfo['count'] + 1), 'updatetime' => time()], ['ssr_id' => $v['id']]);
+                } else {
+                    Detect::create(['ssr_id' => $v['id'], 'count' => 1, 'msg' => $ex->getMessage(), 'updatetime' => time(), 'createtime' => time()]);
+                }
+                if ($site['time_delete_error_count'] <= $detectInfo['count']) {
+                    Config::get($v['id'])->delete();
+                    $detectInfo->delete();
+                }
+
+                $end_time = msectime();
+                $date['timeout'] = $end_time - $statr_time;
+                Config::update($date, ['id' => $v['id']]);
+                continue;
+            }
+        }
     }
 }
