@@ -107,16 +107,26 @@ class Config extends Model
                     'ssrurl' => $ssr,
                     'updatetime' => time(),
                 ];
+                $where = [
+                    'address' => $date['address'],
+                    'port' => $date['port'],
+                    'password' => $date['password'],
+                    'method' => $date['method'],
+                    'protocol' => $date['protocol'],
+                    'obfs' => $date['obfs'],
+                ];
                 foreach ($val2 as $i) {
                     $ls = explode('=', $i);
                     switch ($ls[0]) {
                         case 'obfsparam':
                             $ls[1] = str_replace('_', '+', $ls[1]);
                             $date['obfs_param'] = base64_decode($ls[1]);
+                            $where['obfs_param'] =$date['obfs_param'];
                             break;
                         case 'protoparam':
                             $ls[1] = str_replace('_', '+', $ls[1]);
                             $date['protocol_param'] = base64_decode($ls[1]);
+                            $where['protocol_param'] =$date['protocol_param'];
                             break;
                         case 'remarks':
                             $ls[1] = str_replace('_', '+', $ls[1]);
@@ -129,16 +139,6 @@ class Config extends Model
                     }
                 }
                 /* 去重 */
-                $where = [
-                    'address' => $date['address'],
-                    'port' => $date['port'],
-                    'password' => $date['password'],
-                    'method' => $date['method'],
-                    'protocol' => $date['protocol'],
-                    'protocol_param' => $date['protocol_param'] = !isset($date['protocol_param']) || empty($date['protocol_param']) ? '' : $date['protocol_param'],
-                    'obfs' => $date['obfs'],
-                    'obfs_param' => $date['obfs_param'] = !isset($date['obfs_param']) || empty($date['obfs_param']) ? '' : $date['obfs_param'],
-                ];
                 $ssrCount = self::where($where)->count();
                 if ($ssrCount > 1) {
                     self::where($where)->delete();
