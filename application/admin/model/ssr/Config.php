@@ -105,7 +105,7 @@ class Config extends Model
                     'protocol' => $val1[2],
                     'obfs' => $val1[4],
                     'ssrurl' => $ssr,
-                    'updatetime' => time(),
+                    'createtime' => time(),
                 ];
                 $where = [
                     'address' => $date['address'],
