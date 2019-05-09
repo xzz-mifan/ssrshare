@@ -140,13 +140,13 @@ class Config extends Model
                     'obfs_param' => $date['obfs_param'] = !isset($date['obfs_param']) || empty($date['obfs_param']) ? '' : $date['obfs_param'],
                 ];
                 $ssrCount = self::where($where)->count();
+                if ($ssrCount > 1) {
+                    self::where($where)->delete();
+                }
                 try {
-                    if ($ssrCount > 1) {
-                        self::where($where)->delete();
-                    }
-                    $shareInfo = self::get(['share_id' => $v['id'], 'address' => $val1[0], 'port' => $val1[1]]);
+                    $shareInfo = self::get(['address' => $val1[0], 'port' => $val1[1]]);
                     if ($shareInfo) {
-                        self::update($date, ['id' => $shareInfo['id']]);
+                        self::update($date, ['address' => $val1[0], 'port' => $val1[1]]);
                     } else {
                         $date['status'] = 0;
                         self::create($date);
