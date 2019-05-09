@@ -105,7 +105,7 @@ class Config extends Model
                     'protocol' => $val1[2],
                     'obfs' => $val1[4],
                     'ssrurl' => $ssr,
-                    'createtime' => time(),
+                    'updatetime1' => time(),
                 ];
                 $where = [
                     'address' => $date['address'],
@@ -149,6 +149,7 @@ class Config extends Model
                         self::update($date, ['address' => $val1[0], 'port' => $val1[1]]);
                     } else {
                         $date['status'] = 0;
+                        $date['createtime']=time();
                         self::create($date);
                     }
                 } catch (Exception $ex) {
