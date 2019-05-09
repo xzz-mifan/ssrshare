@@ -135,14 +135,13 @@ class Config extends Model
                     'password' => $date['password'],
                     'method' => $date['method'],
                     'protocol' => $date['protocol'],
-                    'protocol_param' => $date['protocol_param'],
+                    'protocol_param' => $date['protocol_param'] = !isset($date['protocol_param']) || empty($date['protocol_param']) ? '' : $date['protocol_param'],
                     'obfs' => $date['obfs'],
-                    'obfs_param' => $date['obfs_param'],
+                    'obfs_param' => $date['obfs_param'] = !isset($date['obfs_param']) || empty($date['obfs_param']) ? '' : $date['obfs_param'],
                 ];
                 $ssrCount = self::where($where)->count();
                 try {
-                    if ($ssrCount>1)
-                    {
+                    if ($ssrCount > 1) {
                         self::where($where)->delete();
                     }
                     $shareInfo = self::get(['share_id' => $v['id'], 'address' => $val1[0], 'port' => $val1[1]]);
