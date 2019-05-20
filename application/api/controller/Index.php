@@ -27,7 +27,7 @@ class Index extends Api
     public function ssr()
     {
         $configModel = new ConfigModel();
-        $ssrList = $configModel->where(['status' => 1])->order('timeout asc')->limit(50)->select();
+        $ssrList = $configModel->where(['status' => 1])->order('timeout asc')->limit(10)->select();
         $ssr_str = '';
         foreach ($ssrList as $k => $v) {
             $config_str = $v['address'] . ':' . $v['port'] . ':' . $v['protocol'] . ':' . $v['method'] . ':' . $v['obfs'] . ':' . base64_encode($v['password']) . '/?obfsparam=' . base64_encode($v['obfs_param']) . '&protoparam=' . base64_encode($v['protocol_param']) . '&remarks=' . base64_encode('低延迟') . '&group=' . base64_encode('专用SSR');
