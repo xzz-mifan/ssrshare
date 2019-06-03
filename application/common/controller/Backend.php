@@ -3,6 +3,8 @@
 namespace app\common\controller;
 
 use app\admin\library\Auth;
+use fast\Date;
+use think\Cache;
 use think\Config;
 use think\Controller;
 use think\Hook;
@@ -220,6 +222,24 @@ class Backend extends Controller
         $this->assign('auth', $this->auth);
         //渲染管理员对象
         $this->assign('admin', Session::get('admin'));
+        $this->assign('countOnlineRobot',$this->countOnlineRobot());
+    }
+
+    protected function countOnlineRobot()
+    {
+        $robot_online_cache_key = 'fast_online';
+        $robot_onlines = Cache::get($robot_online_cache_key);
+        if (!$robot_onlines) {
+            return 0;
+        }
+        $robot_online_count = 0;
+        $survive = Date::unixtime('minute', -3);
+        foreach ($robot_onlines as $online) {
+            if ($online >= $survive) {
+                $robot_online_count++;
+            }
+        }
+        return $robot_online_count;
     }
 
     /**
