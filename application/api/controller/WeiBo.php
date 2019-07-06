@@ -44,6 +44,9 @@ class WeiBo extends Api
         if ($userInfo['password'] != md5(md5($password).$userInfo['salt'])){
             $this->error('用户名密码不正确');
         }
+        if ($userInfo['statrtime']>time() || $userInfo['endtime']<time()){
+            $this->error('账号已到期或未到激活时间,请重新登录');
+        }
         $uuid = Random::uuid();
         $resl = WeiboUser::update(['token'=>$uuid],['username'=>$username]);
         if (!$resl){
@@ -67,7 +70,10 @@ class WeiBo extends Api
         }
         $userInfo = WeiboUser::get(['token'=>$token]);
         if (!$userInfo){
-            $this->error('验证失败');
+            $this->error('验证失败,请重新登录');
+        }
+        if ($userInfo['statrtime']>time() || $userInfo['endtime']<time()){
+            $this->error('账号已到期,请重新登录');
         }
         $this->success('验证成功');
     }
