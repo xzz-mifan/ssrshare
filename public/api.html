@@ -198,6 +198,11 @@
                                                 <a href="javascript:;" data-id="31" class="list-group-item">检测手机验证码</a>
                                                 <a href="javascript:;" data-id="32" class="list-group-item">检测邮箱验证码</a>
                                             </div>
+                                        <a href="#微博" class="list-group-item" data-toggle="collapse" data-parent="#sidebar">微博  <i class="fa fa-caret-down"></i></a>
+                    <div class="child collapse" id="微博">
+                                                <a href="javascript:;" data-id="33" class="list-group-item">登录</a>
+                                                <a href="javascript:;" data-id="34" class="list-group-item">验证</a>
+                                            </div>
                                         <a href="#fast" class="list-group-item" data-toggle="collapse" data-parent="#sidebar">fast  <i class="fa fa-caret-down"></i></a>
                     <div class="child collapse" id="fast">
                                                 <a href="javascript:;" data-id="2" class="list-group-item">fast心跳检测</a>
@@ -3919,6 +3924,238 @@
                         </div>
                     </div>
                 </div>
+                                <h2>微博</h2>
+                <hr>
+                                <div class="panel panel-default">
+                    <div class="panel-heading" id="heading-33">
+                        <h4 class="panel-title">
+                            <span class="label label-primary">POST</span>
+                            <a data-toggle="collapse" data-parent="#accordion33" href="#collapseOne33"> 登录 <span class="text-muted">/api/wei_bo/login</span></a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne33" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" id="doctab33">
+                                <li class="active"><a href="#info33" data-toggle="tab">基础信息</a></li>
+                                <li><a href="#sandbox33" data-toggle="tab">在线测试</a></li>
+                                <li><a href="#sample33" data-toggle="tab">返回示例</a></li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+
+                                <div class="tab-pane active" id="info33">
+                                    <div class="well">
+                                        登录                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"><strong>Headers</strong></div>
+                                        <div class="panel-body">
+                                                                                        无
+                                                                                    </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"><strong>参数</strong></div>
+                                        <div class="panel-body">
+                                                                                        <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>名称</th>
+                                                        <th>类型</th>
+                                                        <th>必选</th>
+                                                        <th>描述</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                                                                        <tr>
+                                                        <td>username</td>
+                                                        <td>string</td>
+                                                        <td>是</td>
+                                                        <td>用户名</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td>password</td>
+                                                        <td>string</td>
+                                                        <td>是</td>
+                                                        <td>密码</td>
+                                                    </tr>
+                                                                                                    </tbody>
+                                            </table>
+                                                                                    </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"><strong>正文</strong></div>
+                                        <div class="panel-body">
+                                            无                                        </div>
+                                    </div>
+                                </div><!-- #info -->
+
+                                <div class="tab-pane" id="sandbox33">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                                                                        <div class="panel panel-default">
+                                                <div class="panel-heading"><strong>参数</strong></div>
+                                                <div class="panel-body">
+                                                    <form enctype="application/x-www-form-urlencoded" role="form" action="/api/wei_bo/login" method="POST" name="form33" id="form33">
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="username">username</label>
+                                                            <input type="string" class="form-control input-sm" id="username" required placeholder="用户名" name="username">
+                                                        </div>
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="password">password</label>
+                                                            <input type="string" class="form-control input-sm" id="password" required placeholder="密码" name="password">
+                                                        </div>
+                                                                                                                <div class="form-group">
+                                                            <button type="submit" class="btn btn-success send" rel="33">提交</button>
+                                                            <button type="reset" class="btn btn-info" rel="33">重置</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading"><strong>响应输出</strong></div>
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12" style="overflow-x:auto">
+                                                            <pre id="response_headers33"></pre>
+                                                            <pre id="response33"></pre>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading"><strong>返回参数</strong></div>
+                                                <div class="panel-body">
+                                                                                                        无
+                                                                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- #sandbox -->
+
+                                <div class="tab-pane" id="sample33">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <pre id="sample_response33">无</pre>
+                                        </div>
+                                    </div>
+                                </div><!-- #sample -->
+
+                            </div><!-- .tab-content -->
+                        </div>
+                    </div>
+                </div>
+                                <div class="panel panel-default">
+                    <div class="panel-heading" id="heading-34">
+                        <h4 class="panel-title">
+                            <span class="label label-primary">POST</span>
+                            <a data-toggle="collapse" data-parent="#accordion34" href="#collapseOne34"> 验证 <span class="text-muted">/api/wei_bo/check</span></a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne34" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" id="doctab34">
+                                <li class="active"><a href="#info34" data-toggle="tab">基础信息</a></li>
+                                <li><a href="#sandbox34" data-toggle="tab">在线测试</a></li>
+                                <li><a href="#sample34" data-toggle="tab">返回示例</a></li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+
+                                <div class="tab-pane active" id="info34">
+                                    <div class="well">
+                                        验证                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"><strong>Headers</strong></div>
+                                        <div class="panel-body">
+                                                                                        无
+                                                                                    </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"><strong>参数</strong></div>
+                                        <div class="panel-body">
+                                                                                        <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>名称</th>
+                                                        <th>类型</th>
+                                                        <th>必选</th>
+                                                        <th>描述</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                                                                        <tr>
+                                                        <td>token</td>
+                                                        <td>string</td>
+                                                        <td>是</td>
+                                                        <td>TOKEN</td>
+                                                    </tr>
+                                                                                                    </tbody>
+                                            </table>
+                                                                                    </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"><strong>正文</strong></div>
+                                        <div class="panel-body">
+                                            无                                        </div>
+                                    </div>
+                                </div><!-- #info -->
+
+                                <div class="tab-pane" id="sandbox34">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                                                                        <div class="panel panel-default">
+                                                <div class="panel-heading"><strong>参数</strong></div>
+                                                <div class="panel-body">
+                                                    <form enctype="application/x-www-form-urlencoded" role="form" action="/api/wei_bo/check" method="POST" name="form34" id="form34">
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="token">token</label>
+                                                            <input type="string" class="form-control input-sm" id="token" required placeholder="TOKEN" name="token">
+                                                        </div>
+                                                                                                                <div class="form-group">
+                                                            <button type="submit" class="btn btn-success send" rel="34">提交</button>
+                                                            <button type="reset" class="btn btn-info" rel="34">重置</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading"><strong>响应输出</strong></div>
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12" style="overflow-x:auto">
+                                                            <pre id="response_headers34"></pre>
+                                                            <pre id="response34"></pre>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading"><strong>返回参数</strong></div>
+                                                <div class="panel-body">
+                                                                                                        无
+                                                                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- #sandbox -->
+
+                                <div class="tab-pane" id="sample34">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <pre id="sample_response34">无</pre>
+                                        </div>
+                                    </div>
+                                </div><!-- #sample -->
+
+                            </div><!-- .tab-content -->
+                        </div>
+                    </div>
+                </div>
                                 <h2>fast</h2>
                 <hr>
                                 <div class="panel panel-default">
@@ -4019,7 +4256,7 @@
 
             <div class="row mt0 footer">
                 <div class="col-md-6" align="left">
-                    Generated on 2019-06-03 13:21:31                </div>
+                    Generated on 2019-07-07 00:05:14                </div>
                 <div class="col-md-6" align="right">
                     <a href="https://www.fastadmin.net" target="_blank">FastAdmin</a>
                 </div>
