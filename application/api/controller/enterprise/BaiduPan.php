@@ -44,7 +44,20 @@ class BaiduPan extends Api
         $cacheKey = md5($url . implode(',', $params));
         $dataList = Cache::get($cacheKey);
         if (!$dataList) {
-            $datas = Http::get($url, $params);
+            $options = [
+                CURLOPT_HTTPHEADER => [
+                    'Accept: application/json, text/plain, */*',
+                    'Accept-Encoding: gzip, deflate, br',
+                    'Accept-Language: zh,zh-CN;q=0.9',
+                    'Connection: keep-alive',
+                    'Host: www.dalipan.com',
+                    'Referer: https://www.dalipan.com/',
+                    'Sec-Fetch-Mode: cors',
+                    'Sec-Fetch-Site: same-origin',
+                    'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.87 Safari/537.36',
+                ],
+            ];
+            $datas   = Http::get($url, $params, $options);
             if (!$data = json_decode($datas, true)) {
                 halt($datas);
                 $this->error('查找数据异常');
