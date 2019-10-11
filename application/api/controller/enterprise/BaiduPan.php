@@ -59,8 +59,8 @@ class BaiduPan extends Api
             ];
             $datas   = Http::get($url, $params, $options);
             if (!$data = json_decode($datas, true)) {
-                halt($datas);
-                $this->error('查找数据异常');
+                $url = 'https://www.dalipan.com/search';
+                Http::get($url);
             }
             $dataList = ['list' => []];
             if (isset($data['resources']) && $data['resources']) {
