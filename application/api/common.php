@@ -16,5 +16,4 @@ if (!function_exists('format_bytes')) {
             $size /= 1024;
         return round($size, 2) . $delimiter . $units[$i];
     }
-
 }
