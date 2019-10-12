@@ -43,7 +43,6 @@ class BaiduPan extends Api
         /* 计算缓存键 */
         $cacheKey = md5($url . implode(',', $params));
         $dataList = Cache::get($cacheKey);
-        $dataList = null;
         if (!$dataList) {
             $options = [
                 CURLOPT_HTTPHEADER => [
