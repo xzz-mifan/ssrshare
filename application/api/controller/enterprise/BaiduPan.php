@@ -202,8 +202,11 @@ class BaiduPan extends Api
                         $resource['res']['downloads'] = 0;
 
                         $data['resources'][] = $resource;
+                        $data['engine']      = 2;
                     }
                 }
+            } else {
+                $data['engine'] = 1;
             }
             $dataList = ['list' => []];
             if (isset($data['resources']) && $data['resources']) {
@@ -246,7 +249,8 @@ class BaiduPan extends Api
 
             /* 扩展参数 */
             $dataList['extend'] = [
-                'total' => $data['total'],
+                'total'  => $data['total'],
+                'engine' => $data['engine'],
             ];
 
             /* 参数说明 */
