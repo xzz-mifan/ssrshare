@@ -253,9 +253,10 @@ class BaiduPan extends Api
             ];
 
             /* 参数说明 */
-            $dataList['desc'] = [
-                'type' => 'list',
-                'list' => [
+            $dataList['config'] = [
+                'type'     => 1,
+                'dateType' => 'list',
+                'list'     => [
                     [
                         'key'  => 'id',
                         'name' => '唯一标示',
