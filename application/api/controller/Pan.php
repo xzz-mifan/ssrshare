@@ -8,7 +8,6 @@ use app\common\controller\Api;
 use app\common\model\BaiduUrl;
 use fast\Http;
 use think\Cache;
-use think\Db;
 use think\Exception;
 
 /**
@@ -131,7 +130,7 @@ class Pan extends Api
     {
         $this->proxyInfo = $this->randomIP();
 
-        $info = $this->model->where('status', 1)->field('id,url')->find();
+        $info = $this->model->where('id', 494466)->field('id,url')->find();
         if (!$info) {
             echo "已无数据检测\r\n";
         }
@@ -142,6 +141,8 @@ class Pan extends Api
         if ($data == false) {
             exit(-1);
         }
+
+        $this->checkBaiDuIsPWD($info['id'], $info['url']);
 
 
     }
@@ -177,7 +178,7 @@ class Pan extends Api
                     ];
                     $data     = Http::get($checkUrl, $params, $options);
 
-                    echo "百度云 返回参数:{$data}\r\n";
+                    echo "百度云 返回参数1:{$data}\r\n";
                     if (!$dataJson = json_decode($data, true)) {
                         throw new Exception("百度云:{$data}:ip:{$this->proxyInfo['ip']}\r\n", -1);
                     }
@@ -193,15 +194,15 @@ class Pan extends Api
                 case 2:
                     $checkUrl = 'https://www.dalipan.com/api/checkUrlValidFromBaidu';
 
-                    $url  = "https://pan.baidu.com/s/{$url}";
-                    $data = Http::post($checkUrl, ['data' => $url], $options);
+                    $baiduUrl = "https://pan.baidu.com/s/{$url}";
+                    $data     = Http::post($checkUrl, ['data' => $baiduUrl], $options);
 
                     echo "大力盘:{$data} 返回参数:{$data}\r\n";
                     if (!$dataJson = json_decode($data, true)) {
                         throw new Exception("大力盘:{$data}:ip:{$this->proxyInfo['ip']}\r\n", '-1');
                     }
 
-                    if ($dataJson[$url] != 1) {
+                    if ($dataJson[$baiduUrl] != 1) {
                         $this->model->update(['status' => 3], ['id' => $id]);
                         $status = false;
                     } else {
@@ -210,7 +211,7 @@ class Pan extends Api
                     }
                     break;
             }
-            echo "-------验证链接完成 id:{$id} url:{$url}-------\r\n";
+            echo "-------验证链接完成 id:{$id} url:{$baiduUrl}-------\r\n";
             return $status;
 
         } catch (\Exception $ex) {
@@ -242,7 +243,7 @@ class Pan extends Api
             ];
 
             $data = Http::get($checkUrl, $params, $options);
-            echo "百度云 返回参数:{$data}\r\n";
+            echo "百度云 返回参数2:{$data}\r\n";
             if (!$dataJson = json_decode($data, true)) {
                 throw new Exception("百度云:{$data}:ip:{$this->proxyInfo['ip']}\r\n", -1);
             }
@@ -326,7 +327,7 @@ class Pan extends Api
                 ];
 
                 $data = Http::get($checkUrl, $params, $options);
-                echo "百度云 返回参数:{$data}\r\n";
+                echo "百度云 返回参数3:{$data}\r\n";
                 if (!$dataJson = json_decode($data, true)) {
                     throw new Exception("百度云:{$data}:ip:{$this->proxyInfo['ip']}\r\n", -1);
                 }
@@ -385,32 +386,30 @@ class Pan extends Api
                 ];
 
             }
-
             /* 采集二级目录 */
             foreach ($contents as $key => $value) {
                 if ($value['isdir'] == 1) {
 
+                    $contents[$key]['list'] = [];
 
-                    $contents[$key]['list'] = [
-
-                    ];
+                    $this->collection2($url, $value['path'], $contents[$key]['list']);
                 }
             }
-
-
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             if ($ex->getCode() == -1) {
                 $this->proxyInfo = $this->randomIP();
             }
 
-            echo "采集信息异常:{$ex->getMessage()}:行:{$ex->getLine()}\r\n";
+            echo "采集信息异常1:{$ex->getMessage()}:行:{$ex->getLine()}\r\n";
             return $this->checkBaiDuIsPWD($id, $url);
         }
 
     }
 
+    private $collection2ReturnData = [];
 
-    private function collection2($url, $path)
+
+    private function collection2($url, $path, &$info)
     {
         try {
 
@@ -432,22 +431,33 @@ class Pan extends Api
                 'num'        => 20,
                 'order'      => 'time',
                 'shorturl'   => substr($url, 1),
-                'dir'        => urlencode($path),
+                'dir'        => $path,
             ];
 
             $data = Http::get($checkUrl, $params, $options);
             echo "采集二级目录 返回参数:{$data}\r\n";
+            exit(halt($params));
             if (!$dataJson = json_decode($data, true)) {
                 throw new Exception("采集二级目录:{$data}:ip:{$this->proxyInfo['ip']}\r\n", -1);
             }
 
-            $returnData = [];
-
             foreach ($dataJson['list'] as $value) {
-
+                $info[] = [
+                    'isdir'           => $value['isdir'],
+                    'server_filename' => $value['server_filename'],
+                    'path'            => $value['path'],
+                    'size'            => $value['size']
+                ];
             }
 
-            return $returnData;
+            foreach ($info as $key => $value) {
+                if ($value['isdir' == 1]) {
+                    $info[$key]['list'] = [];
+
+                    return $this->collection2($url, $value['path'], $info[$key]['list']);
+                }
+            }
+
 
         } catch (\Exception $ex) {
             if ($ex->getCode() == -1) {
@@ -455,7 +465,7 @@ class Pan extends Api
             }
 
             echo "采集二级目录:{$ex->getMessage()}:行:{$ex->getLine()}\r\n";
-            return $this->collection2($url, $path);
+            return $this->collection2($url, $path, $info);
         }
 
     }
