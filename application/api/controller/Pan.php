@@ -133,14 +133,23 @@ class Pan extends Api
 
     public function checkBaiDuData()
     {
+
+        $params = $this->request->param();
+        if (!isset($params['start_limit'])) {
+            $this->error('请先设置start_limit');
+        }
+
         $this->proxyInfo = $this->randomIP();
 
-        $list = $this->model->where(['status' => ['in', '1,2']])->field('id,url,status')->select();
+        $list = $this->model->where(['status' => ['in', '1,2']])->field('id,url,status')->limit($params['start_limit'], 10000)->select();
         if (!$list) {
             echo "已无数据检测\r\n";
         }
 
         foreach ($list as $info) {
+
+            $info['url'] = explode('?', $info['url']);
+            $info['url'] = $info['url'][0];
 
             /* 验证重复 */
             $baiduPwdModel = new BaiduPwd();
@@ -181,8 +190,6 @@ class Pan extends Api
 
         echo "-------开始验证链接 id:{$id} url:{$url} ip:" . ($this->proxyInfo == null ? '本地' : $this->proxyInfo['ip']) . "-------\r\n";
         try {
-            $url    = explode('?', $url);
-            $url    = $url[0];
             $status = true;
             switch (rand(1, 2)) {
                 case 1:
@@ -279,8 +286,17 @@ class Pan extends Api
 
             $checkUrl = 'https://pan.baidu.com/share/list';
             $params   = [
-                'shorturl' => substr($url, 1),
-                'root'     => 1
+                'web'        => 5,
+                'app_id'     => 250528,
+                'channel'    => 'chunlei',
+                'clienttype' => 5,
+                'desc'       => 1,
+                'showempty'  => 0,
+                'page'       => 1,
+                'num'        => 20,
+                'order'      => 'time',
+                'shorturl'   => substr($url, 1),
+                'root'       => 1
             ];
 
             $data = Http::get($checkUrl, $params, $options);
@@ -289,9 +305,13 @@ class Pan extends Api
                 throw new Exception("百度云:{$data}:ip:{$this->proxyInfo['ip']}\r\n", -1);
             }
 
+            if ($dataJson['errno'] != -9 && $dataJson['errno'] != 0) {
+                throw new Exception("百度云:{$data}:ip:{$this->proxyInfo['ip']}\r\n", -1);
+            }
+
             /* 判断是否有密码 */
             $savePwdData = null;
-            if ($dataJson['errno'] != 0) {
+            if ($dataJson['errno'] == -9) {
 
                 /* 获取密码 */
                 $checkUrl = "https://nuexini.gq/bdp.php";
@@ -367,8 +387,17 @@ class Pan extends Api
 
                 $checkUrl = 'https://pan.baidu.com/share/list';
                 $params   = [
-                    'shorturl' => substr($url, 1),
-                    'root'     => 1
+                    'web'        => 5,
+                    'app_id'     => 250528,
+                    'channel'    => 'chunlei',
+                    'clienttype' => 5,
+                    'desc'       => 1,
+                    'showempty'  => 0,
+                    'page'       => 1,
+                    'num'        => 20,
+                    'order'      => 'time',
+                    'shorturl'   => substr($url, 1),
+                    'root'       => 1
                 ];
 
                 $data = Http::get($checkUrl, $params, $options);
