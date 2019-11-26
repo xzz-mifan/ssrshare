@@ -237,7 +237,7 @@ class Pan extends Api
                     }
                     break;
             }
-            echo "-------验证链接完成 id:{$id} url:{$baiduUrl}-------\r\n";
+            echo "-------验证链接完成 id:{$id} url:{$url}-------\r\n";
             return $status;
 
         } catch (\Exception $ex) {
