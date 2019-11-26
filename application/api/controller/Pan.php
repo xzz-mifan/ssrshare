@@ -405,6 +405,10 @@ class Pan extends Api
                 if (!$dataJson = json_decode($data, true)) {
                     throw new Exception("百度云:{$data}:ip:{$this->proxyInfo['ip']}\r\n", -1);
                 }
+
+                if ($dataJson['errno'] != 0) {
+                    throw new Exception("百度云:{$data}:ip:{$this->proxyInfo['ip']}\r\n", -1);
+                }
             }
 
             /* 标题 */
@@ -554,6 +558,10 @@ class Pan extends Api
                 throw new Exception("采集二级目录:{$data}:ip:{$this->proxyInfo['ip']}\r\n", -1);
             }
 
+            if ($dataJson['errno'] != 0) {
+                throw new Exception("百度云:{$data}:ip:{$this->proxyInfo['ip']}\r\n", -1);
+            }
+
             foreach ($dataJson['list'] as $value) {
                 $info[] = [
                     'isdir'           => $value['isdir'],
@@ -594,7 +602,7 @@ class Pan extends Api
      */
     public function randomIP()
     {
-        switch (rand(1, 4)) {
+        switch (rand(1, 3)) {
             case 1:
                 $proxyArr = [
                     'ip'   => $this->readProxy('socks5'),
@@ -612,9 +620,6 @@ class Pan extends Api
                     'ip'   => $this->readProxy('http'),
                     'type' => CURLPROXY_HTTP,
                 ];
-                break;
-            case 4:
-                $proxyArr = null;
                 break;
         }
 
