@@ -141,6 +141,16 @@ class Pan extends Api
         }
 
         foreach ($list as $info) {
+
+            /* 验证重复 */
+            $baiduPwdModel = new BaiduPwd();
+            $result        = $baiduPwdModel->where('url', $info['url'])->value('url');
+            if ($result) {
+                $this->model->update(['status' => 4], ['id' => $info['id']]);
+                continue;
+            }
+
+
             if ($info['status'] == 1) {
                 /* 检测链接有效性 */
                 $data    = $this->checkBaiDuUrl($info['id'], $info['url']);
