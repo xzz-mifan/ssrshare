@@ -305,6 +305,12 @@ class Pan extends Api
                 throw new Exception("百度云:{$data}:ip:{$this->proxyInfo['ip']}\r\n", -1);
             }
 
+            if ($dataJson['errno'] == -3) {
+                $this->model->update(['status' => 3], ['id' => $id]);
+                return false;
+            }
+
+
             if ($dataJson['errno'] != -9 && $dataJson['errno'] != 0) {
                 throw new Exception("百度云:{$data}:ip:{$this->proxyInfo['ip']}\r\n", -1);
             }
