@@ -44,7 +44,7 @@ class Pan extends Api
 
         $this->model = new BaiduUrl();
 
-        ini_set('memory_limit', '1024M');
+        ini_set('memory_limit', '2048M');
     }
 
     /**
