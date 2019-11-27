@@ -674,20 +674,82 @@ class Pan extends Api
     /**
      * 读取文件
      * @param $filename
+     * @param bool $is_yield
      * @return array
      */
-    private function readFile($filename)
+    private function readFile($filename, $is_yield = false)
     {
         $data       = [];
         $fileHandle = fopen($filename, 'r');
         while (feof($fileHandle) === false) {
 
-            $data[] = fgets($fileHandle);
+            if ($is_yield == true) {
+//                yield fgets($fileHandle);
+            } else {
+                $data[] = fgets($fileHandle);
+            }
         }
 
         fclose($fileHandle);
 
         return $data;
+    }
+
+    //写入
+    private function inter($filename, $arr)
+    {
+        if (!is_array($arr) && !empty($arr)) {
+            return '数组异常';
+        }
+
+        $file = fopen($filename, 'w');
+        if (!$file) {
+            return '文件打开失败';
+        }
+        foreach ($arr as $k => $v) {
+            $ip = $k . ':' . $v;
+            fwrite($file, $ip);
+        }
+        fclose($file);
+    }
+
+    public function filter()
+    {
+        $this->filterIp('http');
+        $this->filterIp('socks4');
+        $this->filterIp('socks5');
+    }
+
+    public function filterIp($filename)
+    {
+        $PFilename = $this->request->param('filename');
+        if ($PFilename) $filename = $PFilename;
+
+        $data = [];
+
+        $list = $this->readFile("{$filename}.txt", true);
+        foreach ($list as $datum) {
+            $info = explode(':', $datum);
+            if (count($info) != 2) {
+                continue;
+            }
+
+            try {
+                if (isset($data[$info[0]])) {
+                    $connection = stream_socket_client("tcp://{$datum}", $erron, $errors, 1);
+                    if (!$connection) {
+                        continue;
+                    }
+                }
+            } catch (\Exception $ex) {
+                continue;
+            }
+
+            $data[$info[0]] = $info[1];
+        }
+
+        $this->inter("{$filename}.txt", $data);
+        echo "{$filename}.txt 过滤完成\r\n";
     }
 
 }
