@@ -44,7 +44,7 @@ class Pan extends Api
 
         $this->model = new BaiduUrl();
 
-        ini_set('memory_limit', '2048M');
+        ini_set('memory_limit', '3096M');
     }
 
     /**
@@ -305,7 +305,7 @@ class Pan extends Api
                 throw new Exception("百度云:{$data}:ip:{$this->proxyInfo['ip']}\r\n", -1);
             }
 
-            if ($dataJson['errno'] == -3) {
+            if ($dataJson['errno'] == -3 || $dataJson['errno'] == -21) {
                 $this->model->update(['status' => 3], ['id' => $id]);
                 return false;
             }
