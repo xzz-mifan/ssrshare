@@ -170,7 +170,7 @@ class Pan extends Api
                 }
             }
 
-            $this->checkBaiDuIsPWD($info['id'], $info['url']);
+            $this->checkBaiDuIsPWD($info['id'], trim($info['url']));
         }
         echo "已全部完成!\r\n";
     }
@@ -300,6 +300,7 @@ class Pan extends Api
             ];
 
             $data = Http::get($checkUrl, $params, $options);
+            echo "百度云 请求参数2:" . json_encode($params) . "\r\n";
             echo "百度云 返回参数2:{$data}\r\n";
             if (!$dataJson = json_decode($data, true)) {
                 throw new Exception("百度云:{$data}:ip:{$this->proxyInfo['ip']}\r\n", -1);
@@ -729,6 +730,7 @@ class Pan extends Api
 
         $list = $this->readFile("{$filename}.txt", true);
         foreach ($list as $datum) {
+            echo $datum . "\n\r";
             $info = explode(':', $datum);
             if (count($info) != 2) {
                 continue;
