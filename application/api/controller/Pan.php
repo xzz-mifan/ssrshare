@@ -661,6 +661,7 @@ class Pan extends Api
 
         $cacheKey = hash_file('md5', $filename);
 
+        unset($data);
         $data = Cache::get($cacheKey);
 
         if (!$data) {
@@ -668,8 +669,9 @@ class Pan extends Api
 
             Cache::set($cacheKey, $data, 259200);
         }
-
-        return $data[(rand(0, count($data) - 1))];
+        $info = $data[(rand(0, count($data) - 1))];
+        unset($data);
+        return $info;
     }
 
     /**
