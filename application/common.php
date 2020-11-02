@@ -2,6 +2,8 @@
 
 // 公共助手函数
 
+error_reporting(3);
+
 if (!function_exists('__')) {
 
     /**
